@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82843efbef888c245a1a1896005f1833, type: 3}
+  m_Name: CabernetSauvignon
+  m_EditorClassIdentifier: Assembly-CSharp::GrapeData
+  displayName: Cabernet Sauvignon
+  isRed: 1
+  liquidColor: {r: 0.36, g: 0.04, b: 0.12, a: 1}
+  acidity: 6
+  alcohol: 14
+  tannin: 9
+  body: 8
+  sweetness: 2
+  notes:
+  - blackcurrant
+  - cedar
+  - mint
+  hint: 'Grippy, full
+
+    blackcurrant, cedar'

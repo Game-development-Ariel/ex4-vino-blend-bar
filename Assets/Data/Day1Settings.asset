@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b79cfc1d17225049afb5d42fb06b935, type: 3}
+  m_Name: Day1Settings
+  m_EditorClassIdentifier: Assembly-CSharp::BarEveningSettings
+  title: Day 1
+  guests:
+  - guestName: Noa
+    blend:
+    - grape: {fileID: 11400000, guid: dbfa50a4f80218b48879289649e6dc7f, type: 2}
+      percent: 100
+    requestedNotes:
+    - cherry
+    - raspberry
+  - guestName: Itai
+    blend:
+    - grape: {fileID: 11400000, guid: 3cf5704fd9645ce4594b5613611486ca, type: 2}
+      percent: 100
+    requestedNotes:
+    - lime
+    - honey
+  - guestName: Maya
+    blend:
+    - grape: {fileID: 11400000, guid: d0fb192a35c802844b86383ac3c3d2c3, type: 2}
+      percent: 70
+    - grape: {fileID: 11400000, guid: 25ef832846a7c55478b94649231a4cf3, type: 2}
+      percent: 30
+    requestedNotes:
+    - black pepper
+    - strawberry
+  patienceSeconds: 75
+  tasteCostSeconds: 5
+  starsToPass: 3
+  basePay: 15
+  payForScore: 35
+  tipScore: 0.85
+  maxTip: 10
