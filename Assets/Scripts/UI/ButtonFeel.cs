@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// Makes a button feel alive: it grows a little under the mouse, shrinks when pressed,
-/// and clicks. Unity calls these methods by itself, because the class implements the pointer interfaces.
+/// Gives a button its feel under the pointer: it grows a little under the mouse,
+/// shrinks and clicks when pressed. Unity calls these methods by itself, because the class implements the pointer interfaces.
 /// </summary>
 public class ButtonFeel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {

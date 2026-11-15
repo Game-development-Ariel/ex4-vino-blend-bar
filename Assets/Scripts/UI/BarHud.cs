@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// The top-left corner of the bar screen: the evening's name, the money, and which guest is at the counter.
+/// Shows how the evening is going, along the top of the screen: its name, the money so far,
+/// and which guest this is. A fixed line of help at the bottom tells how to pour.
 /// </summary>
 public class BarHud : MonoBehaviour
 {

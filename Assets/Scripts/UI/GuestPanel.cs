@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// The guest at the counter: the name, what the guest says, and a patience bar that turns red as it empties.
+/// Shows the guest at the counter: the name, what the guest says, and how much patience is left
+/// (a bar that turns red as it empties).
 /// </summary>
 public class GuestPanel : MonoBehaviour
 {
