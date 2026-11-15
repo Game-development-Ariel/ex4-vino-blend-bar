@@ -5,8 +5,8 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Building blocks for the scene builders of the simple games: a camera, a light,
-/// colored boxes and world labels. The games use plain shapes on purpose, there is no final art yet.
+/// Building blocks for the scene builder of the bar: a camera, a light,
+/// colored boxes and world labels. The bar uses plain shapes on purpose, there is no final art yet.
 /// </summary>
 public static class SceneParts
 {
@@ -71,7 +71,7 @@ public static class SceneParts
         return box;
     }
 
-    /// <summary>A text that lives in the world (not on the UI), for signs like "WASTE".</summary>
+    /// <summary>A text that lives in the world (not on the UI), like the grape names under the bottles.</summary>
     public static TextMesh CreateLabel(string text, Transform parent, Vector2 position, float height, Color color)
     {
         var label = new GameObject("Label " + text);

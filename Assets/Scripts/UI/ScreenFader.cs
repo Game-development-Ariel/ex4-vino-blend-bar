@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Changes scenes with a fade: the screen goes black, the new scene loads, and the black fades away.
-/// Call ScreenFader.FadeAndLoad("EndScreen"). The black screen survives the scene change (DontDestroyOnLoad).
+/// Play again calls ScreenFader.FadeAndLoad with the bar's own scene. The black screen survives the scene change (DontDestroyOnLoad).
 /// </summary>
 public class ScreenFader : MonoBehaviour
 {
@@ -20,7 +20,7 @@ public class ScreenFader : MonoBehaviour
     {
         if (isFading)
         {
-            return; // A second call during a fade (like two triggers at once) would load the scene twice.
+            return; // A second call during a fade (like a double click on Play again) would load the scene twice.
         }
         isFading = true;
 

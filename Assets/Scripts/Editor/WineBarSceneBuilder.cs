@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Tools > Wine Bar > Build Scene: creates the bar scene from code: the shelves with the eight bottles,
+/// Tools > Build Scene Only: creates the bar scene from code: the shelves with the eight bottles,
 /// the glass on the counter, the game logic and the UI. Positions are in world units.
 /// Running it again rebuilds the scene from scratch.
 /// </summary>
@@ -40,6 +40,7 @@ public static class WineBarSceneBuilder
         BarEveningSettings settings = WineBarAssets.EveningSettings(grapes);
 
         GrapeBottle[] bottles = CreateCellar(grapes);
+        CreateCounter();
         Glass glass = CreateGlass(out Transform pourTarget);
 
         var game = new GameObject("Game");
@@ -113,13 +114,18 @@ public static class WineBarSceneBuilder
         return grapeBottle;
     }
 
+    /// <summary>The counter the glass stands on. It is only a picture, at the root of the scene.</summary>
+    private static void CreateCounter()
+    {
+        SceneParts.CreateBox("Counter", null, new Vector2(4.5f, GlassBottom.y - 0.2f), new Vector2(11f, 0.4f), Wood, 1);
+    }
+
     private static Glass CreateGlass(out Transform pourTarget)
     {
         var glassObject = new GameObject("Glass");
         glassObject.transform.position = GlassBottom;
         Transform parent = glassObject.transform;
 
-        SceneParts.CreateBox("Counter", null, new Vector2(4.5f, GlassBottom.y - 0.2f), new Vector2(11f, 0.4f), Wood, 1).name = "Counter";
         SceneParts.CreateBox("Left Side", parent, new Vector2(-GlassWidth / 2f, GlassHeight / 2f), new Vector2(0.06f, GlassHeight), GlassColor, 4);
         SceneParts.CreateBox("Right Side", parent, new Vector2(GlassWidth / 2f, GlassHeight / 2f), new Vector2(0.06f, GlassHeight), GlassColor, 4);
         SceneParts.CreateBox("Base", parent, new Vector2(0f, 0.03f), new Vector2(GlassWidth, 0.06f), GlassColor, 4);
