@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Draws the wine inside the glass: its height follows the total, and its color is the mix of the grapes' colors.
-/// Put it on the sprite of the liquid, which should be one unit tall when the glass is full.
+/// Draws the blend in the glass: as high as the glass is full, in the mixed color of its grapes.
+/// Put it on the sprite of the liquid, at its full-glass size.
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class GlassFill : MonoBehaviour

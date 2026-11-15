@@ -13,6 +13,9 @@ public class Glass : MonoBehaviour
     /// <summary>Happens every time the blend in the glass changes.</summary>
     public event Action Changed;
 
+    /// <summary>Happens when the glass is emptied, right before Changed.</summary>
+    public event Action Emptied;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         WineDrop drop = other.GetComponent<WineDrop>();
@@ -21,7 +24,13 @@ public class Glass : MonoBehaviour
             return;
         }
 
-        Blend.Add(drop.Grape, drop.Percent); // A splash that doesn't fit is simply lost.
+        // Only the part of the splash that fits goes in, the rest is lost. Then any pour size
+        // fills the glass to exactly 100 percent, even one that doesn't divide 100.
+        int room = Blend.Full - Blend.Total;
+        if (room > 0)
+        {
+            Blend.Add(drop.Grape, Mathf.Min(drop.Percent, room));
+        }
         Destroy(drop.gameObject);
         Changed?.Invoke();
     }
@@ -29,6 +38,7 @@ public class Glass : MonoBehaviour
     public void Empty()
     {
         Blend.Clear();
+        Emptied?.Invoke();
         Changed?.Invoke();
     }
 }

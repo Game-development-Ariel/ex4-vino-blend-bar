@@ -24,6 +24,7 @@ MonoBehaviour:
   mediumTanninsBelow: 6.5
   lightBodyBelow: 4
   mediumBodyBelow: 6.5
+  noteThreshold: 20
   lowAlcoholBelow: 11.5
   moderateAlcoholBelow: 13
   strongAlcoholBelow: 14
