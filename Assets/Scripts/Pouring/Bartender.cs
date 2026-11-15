@@ -15,7 +15,7 @@ public class Bartender : MonoBehaviour
     [SerializeField] private Transform pourTarget;
 
     [Tooltip("How many percent of the glass one click pours")]
-    [SerializeField] private int percentPerPour = 10;
+    [SerializeField, Range(1, Blend.Full)] private int percentPerPour = 10;
 
     [Tooltip("Seconds a splash is in the air")]
     [SerializeField] private float flightSeconds = 0.7f;
