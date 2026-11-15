@@ -16,7 +16,8 @@ public static class WineBarSceneBuilder
     private const int BottlesPerShelf = 4;
     private const float FirstBottleX = -7.5f;
     private const float BottleSpacing = 1.8f;
-    private static readonly float[] ShelfHeights = { 2f, -1.6f };
+    private const float TopShelfY = 2f;
+    private const float ShelfSpacing = 3.6f;
 
     private static readonly Vector2 GlassBottom = new Vector2(0.3f, -2.6f);
     private const float GlassWidth = 1.4f;
@@ -70,17 +71,24 @@ public static class WineBarSceneBuilder
         for (int i = 0; i < grapes.Length; i++)
         {
             float x = FirstBottleX + (i % BottlesPerShelf) * BottleSpacing;
-            float y = ShelfHeights[i / BottlesPerShelf];
-            bottles[i] = CreateBottle(cellar, grapes[i], new Vector2(x, y));
+            bottles[i] = CreateBottle(cellar, grapes[i], new Vector2(x, ShelfY(i / BottlesPerShelf)));
         }
 
-        foreach (float y in ShelfHeights)
+        // As many shelves as the grapes need, so a ninth grape starts a third shelf.
+        int shelves = (grapes.Length + BottlesPerShelf - 1) / BottlesPerShelf;
+        for (int shelf = 0; shelf < shelves; shelf++)
         {
+            float y = ShelfY(shelf);
             float width = BottlesPerShelf * BottleSpacing;
             float middle = FirstBottleX + (BottlesPerShelf - 1) * BottleSpacing / 2f;
             SceneParts.CreateBox("Shelf", cellar, new Vector2(middle, y - 0.08f), new Vector2(width, 0.16f), Wood, 1);
         }
         return bottles;
+    }
+
+    private static float ShelfY(int shelf)
+    {
+        return TopShelfY - shelf * ShelfSpacing;
     }
 
     /// <summary>A bottle standing on the shelf, with its name and its two hint lines under the shelf.</summary>

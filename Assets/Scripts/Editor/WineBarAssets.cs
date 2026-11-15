@@ -65,10 +65,10 @@ public static class WineBarAssets
             return evening;
         }
 
-        GrapeData pinot = grapes[2];
-        GrapeData syrah = grapes[3];
-        GrapeData grenache = grapes[4];
-        GrapeData riesling = grapes[7];
+        GrapeData pinot = Find(grapes, "Pinot Noir");
+        GrapeData syrah = Find(grapes, "Syrah");
+        GrapeData grenache = Find(grapes, "Grenache");
+        GrapeData riesling = Find(grapes, "Riesling");
         evening.guests = new[]
         {
             Guest("Noa", new[] { "cherry", "raspberry" }, (pinot, 100)),
@@ -77,6 +77,20 @@ public static class WineBarAssets
         };
         EditorUtility.SetDirty(evening);
         return evening;
+    }
+
+    // By name and not by place on the shelf, so adding or moving a grape doesn't change the guests.
+    private static GrapeData Find(GrapeData[] grapes, string displayName)
+    {
+        foreach (GrapeData grape in grapes)
+        {
+            if (grape.displayName == displayName)
+            {
+                return grape;
+            }
+        }
+        Debug.LogError($"There is no grape called {displayName} for the default guests.");
+        return null;
     }
 
     private static GuestRecipe Guest(string name, string[] notes, params (GrapeData grape, int percent)[] blend)
