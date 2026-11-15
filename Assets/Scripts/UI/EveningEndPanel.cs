@@ -20,7 +20,7 @@ public class EveningEndPanel : MonoBehaviour
 
     private void Show(float stars, bool passed)
     {
-        string score = $"{stars:0.0} of {settings.maxStars:0} stars. You earned ${evening.Money}.";
+        string score = $"{stars:0.0} of {settings.maxStars:0} stars. You earned ${evening.Score.Money}.";
         if (passed)
         {
             ResultOverlay.Show("A good evening", score + "\nThe guests will come back tomorrow.", UiTheme.Hope);

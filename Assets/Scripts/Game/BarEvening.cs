@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Runs the evening: brings the guests one after the other, serves the glass, and decides at the end
-/// whether the evening passed. It raises events, and the UI listens.
+/// Runs the evening: brings the guests one after the other, lets the player taste and serve,
+/// and ends the evening after the last guest. The score is kept in EveningScore.
+/// It raises events, and the UI listens.
 /// </summary>
 public class BarEvening : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class BarEvening : MonoBehaviour
     [SerializeField] private Bartender bartender;
 
     private BlendJudge judge;
-    private float scoreSum;
 
     // After the last guest nothing works any more. Without it, pressing Enter on the selected
     // button would end the evening again and again.
@@ -24,7 +24,7 @@ public class BarEvening : MonoBehaviour
     public GuestOrder Order { get; private set; }
     public int GuestNumber { get; private set; }
     public int GuestCount => settings.guests != null ? settings.guests.Length : 0;
-    public int Money { get; private set; }
+    public EveningScore Score { get; private set; }
 
     public event Action<GuestOrder> GuestArrived;
     public event Action<ServeResult> GuestServed;
@@ -39,6 +39,7 @@ public class BarEvening : MonoBehaviour
     private void Awake()
     {
         judge = new BlendJudge(settings);
+        Score = new EveningScore(settings);
     }
 
     private void OnEnable()
@@ -88,8 +89,7 @@ public class BarEvening : MonoBehaviour
         }
 
         ServeResult result = judge.Judge(Order, new WineProfile(glass.Blend, settings.vocabulary.noteThreshold), patience.Fraction);
-        Money += result.Pay;
-        scoreSum += result.Score;
+        Score.Add(result);
         StopOrdering();
         GuestServed?.Invoke(result);
     }
@@ -103,8 +103,7 @@ public class BarEvening : MonoBehaviour
         if (GuestNumber == settings.guests.Length)
         {
             isOver = true;
-            float stars = scoreSum / settings.guests.Length * settings.maxStars;
-            EveningEnded?.Invoke(stars, stars >= settings.starsToPass);
+            EveningEnded?.Invoke(Score.Stars, Score.Passed);
             return;
         }
 

@@ -61,6 +61,6 @@ public class BarHud : MonoBehaviour
 
     private void ShowMoney(ServeResult result)
     {
-        moneyText.text = "$" + evening.Money;
+        moneyText.text = "$" + evening.Score.Money;
     }
 }
