@@ -16,9 +16,6 @@ public static class UiTheme
     /// <summary>An old book serif, for titles and memories.</summary>
     public static Font TitleFont => Resources.Load<Font>("Fonts/CrimsonText");
 
-    /// <summary>The same serif in italics, for memories and quiet moments.</summary>
-    public static Font ItalicFont => Resources.Load<Font>("Fonts/CrimsonTextItalic");
-
     /// <summary>A typewriter font, for the hero's thoughts, like a diary.</summary>
     public static Font ThoughtFont => Resources.Load<Font>("Fonts/CourierPrime");
 
