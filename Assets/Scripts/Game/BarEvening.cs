@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Runs the evening: brings the guests one after the other, lets the player taste and serve,
-/// and ends the evening after the last guest. The score is kept in EveningScore.
-/// It raises events, and the UI listens.
+/// Runs the evening: brings the guests one after the other, serves the glass, and decides at the end
+/// whether the evening passed. It raises events, and the UI listens.
 /// </summary>
 public class BarEvening : MonoBehaviour
 {
+    private const float MaxStars = 5f;
+
     [SerializeField] private BarEveningSettings settings;
     [SerializeField] private Glass glass;
     [SerializeField] private Patience patience;
@@ -16,34 +17,26 @@ public class BarEvening : MonoBehaviour
     [SerializeField] private Bartender bartender;
 
     private BlendJudge judge;
-
-    // After the last guest nothing works any more. Without it, pressing Enter on the selected
-    // button would end the evening again and again.
-    private bool isOver;
-
-    // True from a guest's arrival until the guest is served or leaves. A glass is tasted and served
-    // only then, and a guest is served only once.
-    private bool isOrdering;
+    private float scoreSum;
 
     public GuestOrder Order { get; private set; }
     public int GuestNumber { get; private set; }
-    public int GuestCount => settings.guests != null ? settings.guests.Length : 0;
-    public EveningScore Score { get; private set; }
+    public int GuestCount => settings.guests.Length;
+    public int Money { get; private set; }
 
     public event Action<GuestOrder> GuestArrived;
     public event Action<ServeResult> GuestServed;
     public event Action GuestGaveUp;
 
-    /// <summary>Gives the wine in the glass when the player tastes it. The UI puts it into words.</summary>
-    public event Action<WineProfile> Tasted;
+    /// <summary>Gives the tasting notes of the glass.</summary>
+    public event Action<string> Tasted;
 
-    /// <summary>Gives the stars of the evening (0 to maxStars) and whether that is enough to pass.</summary>
+    /// <summary>Gives the stars of the evening (0 to 5) and whether that is enough to pass.</summary>
     public event Action<float, bool> EveningEnded;
 
     private void Awake()
     {
         judge = new BlendJudge(settings);
-        Score = new EveningScore(settings);
     }
 
     private void OnEnable()
@@ -58,56 +51,36 @@ public class BarEvening : MonoBehaviour
 
     private void Start()
     {
-        if (!HasTheData())
-        {
-            isOver = true; // Nothing can work without the data, and the error said what is missing.
-            return;
-        }
         NextGuest();
     }
 
-    /// <summary>
-    /// Tasting tells the player what is in the glass, and costs some of the guest's patience.
-    /// Tasting an empty glass teaches nothing, so it is free.
-    /// </summary>
+    /// <summary>Tasting tells the player what is in the glass, and costs some of the guest's patience.</summary>
     public void Taste()
     {
-        if (!isOrdering)
-        {
-            return;
-        }
-
-        var wine = new WineProfile(glass.Blend, settings.vocabulary.noteThreshold);
-        Tasted?.Invoke(wine);
-        if (!wine.IsEmpty)
-        {
-            patience.Spend(settings.tasteCostSeconds);
-        }
+        Tasted?.Invoke(WineWords.Taste(new WineProfile(glass.Blend), settings.vocabulary));
+        patience.Spend(settings.tasteCostSeconds);
     }
 
     public void Serve()
     {
-        if (!isOrdering || !glass.Blend.IsFull)
+        if (!glass.Blend.IsFull)
         {
             return;
         }
 
-        ServeResult result = judge.Judge(Order, new WineProfile(glass.Blend, settings.vocabulary.noteThreshold), patience.Fraction);
-        Score.Add(result);
+        ServeResult result = judge.Judge(Order, new WineProfile(glass.Blend), patience.Fraction);
+        Money += result.Pay;
+        scoreSum += result.Score;
         StopOrdering();
         GuestServed?.Invoke(result);
     }
 
     public void NextGuest()
     {
-        if (isOver || isOrdering)
-        {
-            return;
-        }
         if (GuestNumber == settings.guests.Length)
         {
-            isOver = true;
-            EveningEnded?.Invoke(Score.Stars, Score.Passed);
+            float stars = scoreSum / settings.guests.Length * MaxStars;
+            EveningEnded?.Invoke(stars, stars >= settings.starsToPass);
             return;
         }
 
@@ -116,28 +89,7 @@ public class BarEvening : MonoBehaviour
         glass.Empty();
         patience.Restart(settings.patienceSeconds);
         bartender.enabled = true;
-        isOrdering = true;
         GuestArrived?.Invoke(Order);
-    }
-
-    private bool HasTheData()
-    {
-        if (settings.vocabulary == null)
-        {
-            Debug.LogError($"{settings.name} has no WineVocabulary. Drag Assets/Data/WineVocabulary into its Vocabulary field.", settings);
-            return false;
-        }
-        if (settings.judge == null)
-        {
-            Debug.LogError($"{settings.name} has no JudgeSettings. Drag Assets/Data/JudgeSettings into its Judge field.", settings);
-            return false;
-        }
-        if (GuestCount == 0)
-        {
-            Debug.LogError($"{settings.name} has no guests, so there is no evening to play.", settings);
-            return false;
-        }
-        return true;
     }
 
     // A guest who gives up adds 0 to the score.
@@ -149,7 +101,6 @@ public class BarEvening : MonoBehaviour
 
     private void StopOrdering()
     {
-        isOrdering = false;
         patience.Stop();
         bartender.enabled = false;
     }

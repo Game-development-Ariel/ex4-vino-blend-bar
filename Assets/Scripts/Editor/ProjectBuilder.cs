@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 /// <summary>
@@ -9,9 +10,6 @@ public static class ProjectBuilder
 {
     private const string ScenePath = "Assets/Scenes/WineBar.unity";
 
-    // Outside the project folder, so the build never ends up in git.
-    private const string WebGLFolder = "../ex4-webgl-builds/ex4-vino-blend-bar";
-
     [MenuItem("Tools/Rebuild Scene")]
     public static void BuildScene()
     {
@@ -21,7 +19,7 @@ public static class ProjectBuilder
         AssetDatabase.SaveAssets();
     }
 
-    /// <summary>Builds the game for the browser into WebGLFolder, ready to zip and upload to itch.io.</summary>
+    /// <summary>Builds the game for the browser into Build/WebGL, ready to zip and upload to itch.io.</summary>
     [MenuItem("Tools/Build WebGL")]
     public static void BuildWebGL()
     {
@@ -32,7 +30,7 @@ public static class ProjectBuilder
         var options = new BuildPlayerOptions
         {
             scenes = new[] { ScenePath },
-            locationPathName = WebGLFolder,
+            locationPathName = "Build/WebGL",
             target = BuildTarget.WebGL,
         };
         Debug.Log("WebGL build: " + BuildPipeline.BuildPlayer(options).summary.result);

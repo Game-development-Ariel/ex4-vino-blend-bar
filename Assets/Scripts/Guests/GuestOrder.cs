@@ -23,18 +23,14 @@ public class GuestOrder
         }
 
         GuestName = recipe.guestName;
-        Target = new WineProfile(blend, scale.noteThreshold);
-        RequestedNotes = recipe.requestedNotes ?? new string[0];
+        Target = new WineProfile(blend);
+        RequestedNotes = recipe.requestedNotes;
         Recipe = blend.Describe();
     }
 
     public string Speech()
     {
-        string speech = $"I'd like {WineWords.Sentence(Target, scale)}. Something {WineWords.Alcohol(Target.Alcohol, scale)}.";
-        if (RequestedNotes.Length > 0)
-        {
-            speech += $" I love notes of {string.Join(" and ", RequestedNotes)}.";
-        }
-        return speech;
+        return $"I'd like {WineWords.Sentence(Target, scale)}. Something {WineWords.Alcohol(Target.Alcohol, scale)}. " +
+               $"I love notes of {string.Join(" and ", RequestedNotes)}.";
     }
 }

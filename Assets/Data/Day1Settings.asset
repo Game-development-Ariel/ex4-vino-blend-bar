@@ -38,10 +38,8 @@ MonoBehaviour:
     - black pepper
     - strawberry
   vocabulary: {fileID: 11400000, guid: 5b43c3c9e53b645628a6f14a13a60ccb, type: 2}
-  judge: {fileID: 11400000, guid: 6935660c797b648d8bb8c71497bd0889, type: 2}
   patienceSeconds: 75
   tasteCostSeconds: 5
-  maxStars: 5
   starsToPass: 3
   basePay: 15
   payForScore: 35

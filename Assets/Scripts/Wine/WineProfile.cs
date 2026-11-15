@@ -5,6 +5,9 @@ using System.Collections.Generic;
 /// </summary>
 public class WineProfile
 {
+    // A grape needs at least this share of the blend for its aromas to come through.
+    public const int NoteThreshold = 20;
+
     public float Acidity { get; private set; }
     public float Alcohol { get; private set; }
     public float Tannin { get; private set; }
@@ -17,8 +20,7 @@ public class WineProfile
     public List<string> Notes { get; } = new List<string>();
     public bool IsEmpty { get; private set; } = true;
 
-    /// <param name="noteThreshold">A grape needs at least this percent of the blend for its aromas to come through.</param>
-    public WineProfile(Blend blend, int noteThreshold)
+    public WineProfile(Blend blend)
     {
         if (blend.Total == 0)
         {
@@ -40,7 +42,7 @@ public class WineProfile
                 Redness += weight;
             }
 
-            if (weight * Blend.Full >= noteThreshold)
+            if (weight * 100f >= NoteThreshold)
             {
                 AddNotes(grape);
             }

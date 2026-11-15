@@ -10,10 +10,10 @@ using UnityEngine;
 /// </summary>
 public static class PlaceholderSprites
 {
-    // One world unit = 32 pixels.
+    // Same as the tunnel sprites: one tile = 32 pixels.
     public const int PixelsPerTile = 32;
 
-    /// <param name="path">Where the sprite file is, for example "Assets/Sprites/Shapes/Circle.png".</param>
+    /// <param name="path">Where the sprite file is, for example "Assets/Sprites/Items/WaterBottle.png".</param>
     /// <param name="pixelColor">Gives the color of pixel (x, y). Used only when the file doesn't exist.</param>
     public static Sprite LoadOrCreate(string path, Func<int, int, Color> pixelColor)
     {

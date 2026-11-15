@@ -46,4 +46,18 @@ public static class SetupTools
         }
         fields.ApplyModifiedPropertiesWithoutUndo();
     }
+
+    /// <summary>Deletes the object if it exists and makes a new empty one, so running a tool twice doesn't double things.</summary>
+    public static GameObject Recreate(string name)
+    {
+        Object.DestroyImmediate(GameObject.Find(name));
+        return new GameObject(name);
+    }
+
+    /// <summary>Returns the component, adding it first if the object doesn't have it.</summary>
+    public static T GetOrAdd<T>(GameObject target) where T : Component
+    {
+        T component = target.GetComponent<T>();
+        return component != null ? component : target.AddComponent<T>();
+    }
 }
