@@ -177,6 +177,7 @@ flowchart LR
 * אין סינגלטון, וכל משתנה סטטי מופיע בטבלת הסטטיים למטה.
 * מחלקה אחת בכל קובץ, באותו שם כמו הקובץ.
 * לכל מספר `[SerializeField]` יש `[Tooltip]`, `[Range]` או `[Min]`.
+* **אין מספרי קסם** ([NoMagicNumbersTests.cs](Assets/Tests/EditMode/Architecture/NoMagicNumbersTests.cs)): כל מספר ב-`Assets/Scripts`, גם בכלי העורך, מגיע משם. מותר לכתוב מספר רק במקום שבו הוא מקבל שם או הסבר: קבוע (`const` או `static readonly`) עם הערה, ערך ההתחלה של שדה ב-Inspector (עם `[Tooltip]`), או בתוך תכונה כמו `[Range]`. בכל מקום אחר מותרים רק 0, 1, 2 ו-0.5 (כלום, אחד, כפול, חצי). הבדיקה מוחקת קודם הערות וטקסטים, אז "Day 1" בתוך מחרוזת לא נחשב.
 * כל מחלקה של המשחק מוזכרת ב-README.
 * ב-BlendJudge, WineWords ו-WineProfile אין מספרים קבועים חוץ מ-0 ו-1. המספרים שלהם נמצאים ב-JudgeSettings וב-WineVocabulary.
 
