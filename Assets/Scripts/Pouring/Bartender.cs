@@ -18,7 +18,7 @@ public class Bartender : MonoBehaviour
     [SerializeField, Range(1, Blend.Full)] private int percentPerPour = 10;
 
     [Tooltip("Seconds a splash is in the air")]
-    [SerializeField] private float flightSeconds = 0.7f;
+    [SerializeField, Min(0.1f)] private float flightSeconds = 0.7f;
 
     // The splashes that are still in the air. A splash that lands or falls is destroyed,
     // and then its entry here becomes null.
@@ -59,11 +59,12 @@ public class Bartender : MonoBehaviour
 
         // The throw: a body under gravity moves by  distance = velocity * t + gravity * t * t / 2.
         // Solving for the velocity that covers the distance to the glass in exactly flightSeconds:
+        Rigidbody2D body = drop.GetComponent<Rigidbody2D>();
+        Vector2 gravity = Physics2D.gravity * body.gravityScale; // The gravity this body really feels.
         Vector2 distance = (Vector2)pourTarget.position - bottle.SpoutPosition;
-        Vector2 velocity = distance / flightSeconds - Physics2D.gravity * flightSeconds / 2f;
+        Vector2 velocity = distance / flightSeconds - gravity * flightSeconds / 2f;
 
         // An impulse of velocity * mass gives the body exactly that velocity.
-        Rigidbody2D body = drop.GetComponent<Rigidbody2D>();
         body.AddForce(velocity * body.mass, ForceMode2D.Impulse);
     }
 
