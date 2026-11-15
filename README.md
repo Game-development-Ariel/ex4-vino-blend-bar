@@ -17,7 +17,7 @@
 2. ב-Unity Hub פותחים את התיקייה של המאגר, בגרסה 6000.3.25f1.
 3. פותחים את הסצנה `Assets/Scenes/WineBar` ולוחצים Play.
 
-הסצנה והנתונים נבנים מקוד ב-[WineBarSceneBuilder.cs](Assets/Scripts/Editor/WineBarSceneBuilder.cs). אחרי שינוי בכלים מריצים `Tools > Rebuild Scene`. בנייה לדפדפן: `Tools > Build WebGL`.
+הסצנה והנתונים נבנים מקוד ב-[WineBarSceneBuilder.cs](Assets/Scripts/Editor/WineBarSceneBuilder.cs). אחרי שינוי בכלים מריצים `Tools > Rebuild Scene`. בנייה לדפדפן: `Tools > Build WebGL`. הבנייה יוצאת לתיקייה `../ex4-webgl-builds/ex4-vino-blend-bar`, מחוץ לפרויקט, כדי שלא תיכנס לגיט.
 
 ## איך משחקים
 
