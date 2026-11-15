@@ -9,6 +9,9 @@ public class BarEveningSettings : ScriptableObject
     public string title = "Day 1";
     public GuestRecipe[] guests;
 
+    [Tooltip("Where the words for a wine change, for the guests' orders and the tasting")]
+    public WineVocabulary vocabulary;
+
     [Header("Patience")]
     public float patienceSeconds = 75f;
 

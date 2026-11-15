@@ -46,7 +46,7 @@
 ```
 Assets/
 ├── Scripts/
-│   ├── Wine/       GrapeData, Blend, WineProfile, WineWords
+│   ├── Wine/       GrapeData, Blend, WineProfile, WineWords, WineVocabulary
 │   ├── Pouring/    GrapeBottle, Bartender, WineDrop, Glass
 │   ├── Guests/     GuestRecipe, GuestOrder, BlendJudge, ServeResult
 │   ├── Game/       BarEvening, Patience, BarEveningSettings
@@ -131,7 +131,7 @@ flowchart LR
 
 | איפה | מה | למה |
 |---|---|---|
-| [WineWords](Assets/Scripts/Wine/WineWords.cs) | מחלקה סטטית | רק פונקציות שהופכות מספר למילים. אין בה מצב |
+| [WineWords](Assets/Scripts/Wine/WineWords.cs) | מחלקה סטטית | רק פונקציות שהופכות מספר למילים. אין בה מצב. הגבולות בין המילים (מתי יין "יבש") לא כתובים בה, הם בנכס [WineVocabulary](Assets/Scripts/Wine/WineVocabulary.cs) שהיא מקבלת |
 | [Sfx](Assets/Scripts/Audio/Sfx.cs) | מחלקה סטטית עם AudioSource אחד | הקליק של Play again צריך להמשיך גם כשהסצנה נטענת מחדש. אין בו מצב של המשחק |
 | [ScreenFader](Assets/Scripts/UI/ScreenFader.cs) | `FadeAndLoad` סטטית ודגל `isFading` | המסך השחור חייב לשרוד את טעינת הסצנה. הדגל מונע טעינה כפולה |
 | UiFactory, UiAnim, UiTheme, ResultOverlay | מחלקות סטטיות של פונקציות עזר וקבועים | אין בהן מצב |

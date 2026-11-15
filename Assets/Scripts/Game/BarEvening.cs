@@ -57,7 +57,7 @@ public class BarEvening : MonoBehaviour
     /// <summary>Tasting tells the player what is in the glass, and costs some of the guest's patience.</summary>
     public void Taste()
     {
-        Tasted?.Invoke(WineWords.Taste(new WineProfile(glass.Blend)));
+        Tasted?.Invoke(WineWords.Taste(new WineProfile(glass.Blend), settings.vocabulary));
         patience.Spend(settings.tasteCostSeconds);
     }
 
@@ -84,7 +84,7 @@ public class BarEvening : MonoBehaviour
             return;
         }
 
-        Order = new GuestOrder(settings.guests[GuestNumber]);
+        Order = new GuestOrder(settings.guests[GuestNumber], settings.vocabulary);
         GuestNumber++;
         glass.Empty();
         patience.Restart(settings.patienceSeconds);

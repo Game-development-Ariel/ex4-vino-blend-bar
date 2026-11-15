@@ -11,8 +11,11 @@ public class GuestOrder
     /// <summary>The right answer, shown after serving, for example "70% Syrah + 30% Grenache".</summary>
     public string Recipe { get; }
 
-    public GuestOrder(GuestRecipe recipe)
+    private readonly WineVocabulary scale;
+
+    public GuestOrder(GuestRecipe recipe, WineVocabulary scale)
     {
+        this.scale = scale;
         var blend = new Blend();
         foreach (GuestRecipe.Share share in recipe.blend)
         {
@@ -27,7 +30,7 @@ public class GuestOrder
 
     public string Speech()
     {
-        return $"I'd like {WineWords.Sentence(Target)}. Something {WineWords.Alcohol(Target.Alcohol)}. " +
+        return $"I'd like {WineWords.Sentence(Target, scale)}. Something {WineWords.Alcohol(Target.Alcohol, scale)}. " +
                $"I love notes of {string.Join(" and ", RequestedNotes)}.";
     }
 }

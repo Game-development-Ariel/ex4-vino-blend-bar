@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02dea2e49c1ea4ce1abcc1d1a93e3271, type: 3}
+  m_Name: WineVocabulary
+  m_EditorClassIdentifier: Assembly-CSharp::WineVocabulary
+  whiteBelow: 0.25
+  redAbove: 0.75
+  dryBelow: 3
+  offDryBelow: 4.5
+  softAcidityBelow: 4.5
+  balancedAcidityBelow: 6.5
+  crispAcidityBelow: 8
+  noTanninsBelow: 2.5
+  silkyTanninsBelow: 4.5
+  mediumTanninsBelow: 6.5
+  lightBodyBelow: 4
+  mediumBodyBelow: 6.5
+  lowAlcoholBelow: 11.5
+  moderateAlcoholBelow: 13
+  strongAlcoholBelow: 14

@@ -37,6 +37,7 @@ MonoBehaviour:
     requestedNotes:
     - black pepper
     - strawberry
+  vocabulary: {fileID: 11400000, guid: 5b43c3c9e53b645628a6f14a13a60ccb, type: 2}
   patienceSeconds: 75
   tasteCostSeconds: 5
   starsToPass: 3

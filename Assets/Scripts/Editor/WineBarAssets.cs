@@ -55,6 +55,11 @@ public static class WineBarAssets
         string path = Folder + "Day1Settings.asset";
         bool isNew = !File.Exists(path);
         BarEveningSettings evening = SetupTools.Asset<BarEveningSettings>(path);
+        if (evening.vocabulary == null)
+        {
+            evening.vocabulary = SetupTools.Asset<WineVocabulary>(Folder + "WineVocabulary.asset");
+            EditorUtility.SetDirty(evening);
+        }
         if (!isNew)
         {
             return evening;
