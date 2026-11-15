@@ -13,6 +13,9 @@ public class Glass : MonoBehaviour
     /// <summary>Happens every time the blend in the glass changes.</summary>
     public event Action Changed;
 
+    /// <summary>Happens when the glass is emptied, right before Changed.</summary>
+    public event Action Emptied;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         WineDrop drop = other.GetComponent<WineDrop>();
@@ -29,6 +32,7 @@ public class Glass : MonoBehaviour
     public void Empty()
     {
         Blend.Clear();
+        Emptied?.Invoke();
         Changed?.Invoke();
     }
 }

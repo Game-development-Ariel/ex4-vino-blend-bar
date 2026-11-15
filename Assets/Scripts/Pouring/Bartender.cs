@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -19,20 +20,29 @@ public class Bartender : MonoBehaviour
     [Tooltip("Seconds a splash is in the air")]
     [SerializeField] private float flightSeconds = 0.7f;
 
+    // The splashes that are still in the air. A splash that lands or falls is destroyed,
+    // and then its entry here becomes null.
+    private readonly List<WineDrop> dropsInFlight = new List<WineDrop>();
+
     private void OnEnable()
     {
         foreach (GrapeBottle bottle in bottles)
         {
             bottle.Clicked += Pour;
         }
+        glass.Emptied += DestroyDropsInFlight;
     }
 
+    // Disabled means the guest was served or left, so a splash still in the air must not
+    // land in the next guest's glass.
     private void OnDisable()
     {
         foreach (GrapeBottle bottle in bottles)
         {
             bottle.Clicked -= Pour;
         }
+        glass.Emptied -= DestroyDropsInFlight;
+        DestroyDropsInFlight();
     }
 
     private void Pour(GrapeBottle bottle)
@@ -44,6 +54,8 @@ public class Bartender : MonoBehaviour
 
         WineDrop drop = Instantiate(dropPrefab, bottle.SpoutPosition, Quaternion.identity);
         drop.Setup(bottle.Grape, percentPerPour);
+        dropsInFlight.RemoveAll(oldDrop => oldDrop == null);
+        dropsInFlight.Add(drop);
 
         // The throw: a body under gravity moves by  distance = velocity * t + gravity * t * t / 2.
         // Solving for the velocity that covers the distance to the glass in exactly flightSeconds:
@@ -53,5 +65,18 @@ public class Bartender : MonoBehaviour
         // An impulse of velocity * mass gives the body exactly that velocity.
         Rigidbody2D body = drop.GetComponent<Rigidbody2D>();
         body.AddForce(velocity * body.mass, ForceMode2D.Impulse);
+    }
+
+    // A splash thrown before "Empty glass" would otherwise land in the glass that was just emptied.
+    private void DestroyDropsInFlight()
+    {
+        foreach (WineDrop drop in dropsInFlight)
+        {
+            if (drop != null)
+            {
+                Destroy(drop.gameObject);
+            }
+        }
+        dropsInFlight.Clear();
     }
 }
