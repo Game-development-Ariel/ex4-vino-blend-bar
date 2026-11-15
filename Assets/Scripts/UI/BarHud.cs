@@ -7,7 +7,6 @@ using UnityEngine.UI;
 /// </summary>
 public class BarHud : MonoBehaviour
 {
-    private const int CanvasSortingOrder = 10;
     private const int BigFontSize = 56;
     private const int GuestFontSize = 28;
     private const int HelpFontSize = 26;
@@ -33,7 +32,7 @@ public class BarHud : MonoBehaviour
 
     private void Awake()
     {
-        Canvas canvas = UiFactory.CreateCanvas("HUD Canvas", CanvasSortingOrder);
+        Canvas canvas = UiFactory.CreateCanvas("HUD Canvas", UiTheme.HudLayer);
         canvas.transform.SetParent(transform, false);
 
         Text title = UiFactory.CreateTitle(canvas.transform, "Title", TopLeft, TitleSize, BigFontSize, UiTheme.TextColor);

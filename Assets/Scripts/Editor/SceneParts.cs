@@ -14,12 +14,27 @@ public static class SceneParts
     private const string CirclePath = "Assets/Sprites/Shapes/Circle.png";
     private const string FontPath = "Assets/Resources/Fonts/CrimsonText.ttf";
 
+    // The camera stands in front of the 2D scene, which is at z = 0.
+    private static readonly Vector3 CameraPosition = new Vector3(0f, 0f, -10f);
+
+    // World labels: drawn with a big font so the letters are sharp, then scaled down.
+    // World labels use a big font size, so the letters stay sharp.
+    // A TextMesh draws 10 font pixels per world unit, so at character size 1 the letters are
+    // LabelFontSize / 10 world units tall. characterSize = height / LabelHeightPerCharacterSize gives letters "height" units tall.
+    private const int LabelFontSize = 64;
+    private const float TextMeshPixelsPerUnit = 10f;
+    private const float LabelHeightPerCharacterSize = LabelFontSize / TextMeshPixelsPerUnit;
+
+    // In front of every box, so the labels are never hidden.
+    private const int LabelSortingOrder = 20;
+
     /// <summary>A white square, one world unit wide. Tinting and scaling it gives any colored box.</summary>
     public static Sprite Square => LoadShape(SquarePath, (x, y) => Color.white);
 
     public static Sprite Circle => LoadShape(CirclePath, (x, y) =>
     {
         float half = PlaceholderSprites.PixelsPerTile / 2f;
+        // x + 0.5 is the middle of pixel x.
         bool inside = new Vector2(x + 0.5f - half, y + 0.5f - half).magnitude <= half;
         return inside ? Color.white : Color.clear;
     });
@@ -40,7 +55,7 @@ public static class SceneParts
     {
         var cameraObject = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
         cameraObject.tag = "MainCamera";
-        cameraObject.transform.position = new Vector3(0f, 0f, -10f);
+        cameraObject.transform.position = CameraPosition;
         Camera camera = cameraObject.GetComponent<Camera>();
         camera.orthographic = true;
         camera.orthographicSize = orthographicSize;
@@ -82,15 +97,15 @@ public static class SceneParts
         TextMesh textMesh = label.AddComponent<TextMesh>();
         textMesh.text = text;
         textMesh.font = font;
-        textMesh.fontSize = 64;
-        textMesh.characterSize = height / 6.4f; // With font size 64 this makes the letters about "height" units tall.
+        textMesh.fontSize = LabelFontSize;
+        textMesh.characterSize = height / LabelHeightPerCharacterSize;
         textMesh.anchor = TextAnchor.MiddleCenter;
         textMesh.alignment = TextAlignment.Center;
         textMesh.color = color;
 
         MeshRenderer meshRenderer = label.GetComponent<MeshRenderer>();
         meshRenderer.sharedMaterial = font.material;
-        meshRenderer.sortingOrder = 20;
+        meshRenderer.sortingOrder = LabelSortingOrder;
         return textMesh;
     }
 

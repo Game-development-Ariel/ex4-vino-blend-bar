@@ -29,11 +29,67 @@ public static class WineBarSceneBuilder
     private static readonly Color LabelColor = new Color(0.98f, 0.93f, 0.84f);
     private static readonly Color HintColor = new Color(0.75f, 0.68f, 0.58f);
 
+    // Half the height of the world the camera shows, in world units.
+    private const float CameraHalfHeight = 5.4f;
+
+    // Sorting orders: a higher number is drawn in front.
+    private const int FurnitureOrder = 1;
+    private const int BottleOrder = 3;
+    private const int BottlePaperOrder = 4;
+    private const int LiquidOrder = 3;
+    private const int GlassOrder = 4;
+    private const int DropOrder = 6;
+
+    // How thick the plank of a shelf is, in world units. It hangs just under the bottles.
+    private const float ShelfThickness = 0.16f;
+
+    // How much darker the bottle glass is than its wine: 0 = the wine's color, 1 = black.
+    private const float RedBottleDarkening = 0.35f;
+    private const float WhiteBottleDarkening = 0.15f;
+
+    // The parts of a bottle, in world units, from the bottom of the bottle (where it stands on the shelf).
+    private static readonly Vector2 BottleBodyCenter = new Vector2(0f, 0.65f);
+    private static readonly Vector2 BottleBodySize = new Vector2(0.55f, 1.3f);
+    private static readonly Vector2 NeckCenter = new Vector2(0f, 1.5f);
+    private static readonly Vector2 NeckSize = new Vector2(0.2f, 0.4f);
+    private static readonly Vector2 PaperCenter = new Vector2(0f, 0.6f);
+    private static readonly Vector2 PaperSize = new Vector2(0.55f, 0.45f);
+    private static readonly Vector3 SpoutPosition = new Vector3(0f, 1.8f, 0f);
+
+    // The grape's name and its hint under the shelf: the middle of each label (from the bottom of the bottle)
+    // and how tall its letters are, in world units.
+    private static readonly Vector2 NameLabelPosition = new Vector2(0f, -0.42f);
+    private const float NameLabelHeight = 0.24f;
+    private static readonly Vector2 HintLabelPosition = new Vector2(0f, -0.95f);
+    private const float HintLabelHeight = 0.19f;
+
+    // The area that catches a click on a bottle, a little bigger than the bottle. From the bottom of the bottle, in world units.
+    private static readonly Vector2 BottleClickCenter = new Vector2(0f, 0.85f);
+    private static readonly Vector2 BottleClickSize = new Vector2(0.9f, 1.8f);
+
+    // The counter, in world units: the x of its middle, its width, and its thickness. Its top is at the bottom of the glass.
+    private const float CounterCenterX = 4.5f;
+    private const float CounterWidth = 11f;
+    private const float CounterThickness = 0.4f;
+
+    // How thick the sides and the base of the glass are, in world units.
+    // The liquid is this much narrower and shorter than the glass, so it fits between the sides.
+    private const float GlassWallThickness = 0.06f;
+
+    // The trigger at the mouth of the glass, in world units: how far its middle is under the rim,
+    // how much narrower it is than the glass (in total, not per side), and how tall it is.
+    private const float MouthCenterBelowRim = 0.2f;
+    private const float MouthInset = 0.1f;
+    private const float MouthHeight = 1.2f;
+
+    // How wide a splash is, in world units.
+    private const float DropSize = 0.3f;
+
     [MenuItem("Tools/Build Scene Only")]
     public static void Build()
     {
         Scene scene = SceneParts.NewScene();
-        Camera camera = SceneParts.CreateCamera(Wall, 5.4f);
+        Camera camera = SceneParts.CreateCamera(Wall, CameraHalfHeight);
         SceneParts.CreateGlobalLight();
         SetupTools.SetField(camera.gameObject.AddComponent<WorldClicker>(), "worldCamera", camera);
 
@@ -81,7 +137,7 @@ public static class WineBarSceneBuilder
             float y = ShelfY(shelf);
             float width = BottlesPerShelf * BottleSpacing;
             float middle = FirstBottleX + (BottlesPerShelf - 1) * BottleSpacing / 2f;
-            SceneParts.CreateBox("Shelf", cellar, new Vector2(middle, y - 0.08f), new Vector2(width, 0.16f), Wood, 1);
+            SceneParts.CreateBox("Shelf", cellar, new Vector2(middle, y - ShelfThickness / 2f), new Vector2(width, ShelfThickness), Wood, FurnitureOrder);
         }
         return bottles;
     }
@@ -99,22 +155,22 @@ public static class WineBarSceneBuilder
         bottle.transform.position = basePosition;
 
         // Dark glass with a hint of the wine's color.
-        Color glassTint = Color.Lerp(grape.liquidColor, Color.black, grape.isRed ? 0.35f : 0.15f);
-        SceneParts.CreateBox("Body", bottle.transform, new Vector2(0f, 0.65f), new Vector2(0.55f, 1.3f), glassTint, 3);
-        SceneParts.CreateBox("Neck", bottle.transform, new Vector2(0f, 1.5f), new Vector2(0.2f, 0.4f), glassTint, 3);
-        SceneParts.CreateBox("Paper", bottle.transform, new Vector2(0f, 0.6f), new Vector2(0.55f, 0.45f), LabelColor, 4);
+        Color glassTint = Color.Lerp(grape.liquidColor, Color.black, grape.isRed ? RedBottleDarkening : WhiteBottleDarkening);
+        SceneParts.CreateBox("Body", bottle.transform, BottleBodyCenter, BottleBodySize, glassTint, BottleOrder);
+        SceneParts.CreateBox("Neck", bottle.transform, NeckCenter, NeckSize, glassTint, BottleOrder);
+        SceneParts.CreateBox("Paper", bottle.transform, PaperCenter, PaperSize, LabelColor, BottlePaperOrder);
 
         var spout = new GameObject("Spout");
         spout.transform.SetParent(bottle.transform, false);
-        spout.transform.localPosition = new Vector3(0f, 1.8f, 0f);
+        spout.transform.localPosition = SpoutPosition;
 
-        SceneParts.CreateLabel(grape.displayName, bottle.transform, new Vector2(0f, -0.42f), 0.24f, LabelColor);
-        SceneParts.CreateLabel(grape.hint, bottle.transform, new Vector2(0f, -0.95f), 0.19f, HintColor);
+        SceneParts.CreateLabel(grape.displayName, bottle.transform, NameLabelPosition, NameLabelHeight, LabelColor);
+        SceneParts.CreateLabel(grape.hint, bottle.transform, HintLabelPosition, HintLabelHeight, HintColor);
 
         BoxCollider2D clickArea = bottle.AddComponent<BoxCollider2D>();
         clickArea.isTrigger = true;
-        clickArea.offset = new Vector2(0f, 0.85f);
-        clickArea.size = new Vector2(0.9f, 1.8f);
+        clickArea.offset = BottleClickCenter;
+        clickArea.size = BottleClickSize;
 
         GrapeBottle grapeBottle = bottle.AddComponent<GrapeBottle>();
         SetupTools.SetField(grapeBottle, "grape", grape);
@@ -125,7 +181,7 @@ public static class WineBarSceneBuilder
     /// <summary>The counter the glass stands on. It is only a picture, at the root of the scene.</summary>
     private static void CreateCounter()
     {
-        SceneParts.CreateBox("Counter", null, new Vector2(4.5f, GlassBottom.y - 0.2f), new Vector2(11f, 0.4f), Wood, 1);
+        SceneParts.CreateBox("Counter", null, new Vector2(CounterCenterX, GlassBottom.y - CounterThickness / 2f), new Vector2(CounterWidth, CounterThickness), Wood, FurnitureOrder);
     }
 
     private static Glass CreateGlass(out Transform pourTarget)
@@ -134,19 +190,19 @@ public static class WineBarSceneBuilder
         glassObject.transform.position = GlassBottom;
         Transform parent = glassObject.transform;
 
-        SceneParts.CreateBox("Left Side", parent, new Vector2(-GlassWidth / 2f, GlassHeight / 2f), new Vector2(0.06f, GlassHeight), GlassColor, 4);
-        SceneParts.CreateBox("Right Side", parent, new Vector2(GlassWidth / 2f, GlassHeight / 2f), new Vector2(0.06f, GlassHeight), GlassColor, 4);
-        SceneParts.CreateBox("Base", parent, new Vector2(0f, 0.03f), new Vector2(GlassWidth, 0.06f), GlassColor, 4);
+        SceneParts.CreateBox("Left Side", parent, new Vector2(-GlassWidth / 2f, GlassHeight / 2f), new Vector2(GlassWallThickness, GlassHeight), GlassColor, GlassOrder);
+        SceneParts.CreateBox("Right Side", parent, new Vector2(GlassWidth / 2f, GlassHeight / 2f), new Vector2(GlassWallThickness, GlassHeight), GlassColor, GlassOrder);
+        SceneParts.CreateBox("Base", parent, new Vector2(0f, GlassWallThickness / 2f), new Vector2(GlassWidth, GlassWallThickness), GlassColor, GlassOrder);
 
         // The trigger covers the mouth of the glass and a little above it.
         // A splash that enters it joins the blend, so a fast splash from a far bottle can't fly over it.
         BoxCollider2D mouth = glassObject.AddComponent<BoxCollider2D>();
         mouth.isTrigger = true;
-        mouth.offset = new Vector2(0f, GlassHeight - 0.2f);
-        mouth.size = new Vector2(GlassWidth - 0.1f, 1.2f);
+        mouth.offset = new Vector2(0f, GlassHeight - MouthCenterBelowRim);
+        mouth.size = new Vector2(GlassWidth - MouthInset, MouthHeight);
         Glass glass = glassObject.AddComponent<Glass>();
 
-        GameObject liquid = SceneParts.CreateBox("Liquid", parent, new Vector2(0f, GlassHeight / 2f), new Vector2(GlassWidth - 0.06f, GlassHeight - 0.06f), Color.clear, 3);
+        GameObject liquid = SceneParts.CreateBox("Liquid", parent, new Vector2(0f, GlassHeight / 2f), new Vector2(GlassWidth - GlassWallThickness, GlassHeight - GlassWallThickness), Color.clear, LiquidOrder);
         SetupTools.SetField(liquid.AddComponent<GlassFill>(), "glass", glass);
 
         pourTarget = new GameObject("Pour Target").transform;
@@ -163,10 +219,10 @@ public static class WineBarSceneBuilder
     {
         Directory.CreateDirectory(Path.GetDirectoryName(DropPrefabPath));
         var drop = new GameObject("WineDrop");
-        drop.transform.localScale = Vector3.one * 0.3f;
+        drop.transform.localScale = Vector3.one * DropSize;
         SpriteRenderer spriteRenderer = drop.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = SceneParts.Circle;
-        spriteRenderer.sortingOrder = 6;
+        spriteRenderer.sortingOrder = DropOrder;
         drop.AddComponent<Rigidbody2D>();
         drop.AddComponent<CircleCollider2D>().isTrigger = true;
         drop.AddComponent<WineDrop>();

@@ -7,7 +7,6 @@ using UnityEngine.UI;
 /// </summary>
 public class GuestPanel : MonoBehaviour
 {
-    private const int CanvasSortingOrder = 10;
     private const int NameFontSize = 44;
     private const int SpeechFontSize = 28;
     private const float Width = 760f;
@@ -34,7 +33,7 @@ public class GuestPanel : MonoBehaviour
 
     private void Awake()
     {
-        Canvas canvas = UiFactory.CreateCanvas("Guest Canvas", CanvasSortingOrder);
+        Canvas canvas = UiFactory.CreateCanvas("Guest Canvas", UiTheme.HudLayer);
         canvas.transform.SetParent(transform, false);
 
         Image panel = UiFactory.CreatePanel(canvas.transform, "Guest Panel", "Panel");

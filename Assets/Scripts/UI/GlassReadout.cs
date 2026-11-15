@@ -6,7 +6,6 @@ using UnityEngine.UI;
 /// </summary>
 public class GlassReadout : MonoBehaviour
 {
-    private const int CanvasSortingOrder = 10;
     private const int FontSize = 28;
 
     private static readonly Vector2 BottomCenter = new Vector2(0.5f, 0f);
@@ -19,7 +18,7 @@ public class GlassReadout : MonoBehaviour
 
     private void Awake()
     {
-        Canvas canvas = UiFactory.CreateCanvas("Glass Canvas", CanvasSortingOrder);
+        Canvas canvas = UiFactory.CreateCanvas("Glass Canvas", UiTheme.HudLayer);
         canvas.transform.SetParent(transform, false);
 
         glassText = UiFactory.CreateText(canvas.transform, "Glass", BottomCenter, Size, FontSize, TextAnchor.MiddleCenter);

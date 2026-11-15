@@ -10,19 +10,98 @@ public static class WineBarAssets
 {
     private const string Folder = "Assets/Data/";
 
+    // The values of each grape, on the GrapeData scale: acidity, tannin, body and sweetness
+    // from 1 to 10, and alcohol in percent. The color is the color of its wine in the glass.
+
+    private static readonly Color CabernetColor = new Color(0.36f, 0.04f, 0.12f);
+    private const float CabernetAcidity = 6f;
+    private const float CabernetAlcohol = 14f;
+    private const float CabernetTannin = 9f;
+    private const float CabernetBody = 8f;
+    private const float CabernetSweetness = 2f;
+
+    private static readonly Color MerlotColor = new Color(0.48f, 0.07f, 0.16f);
+    private const float MerlotAcidity = 5f;
+    private const float MerlotAlcohol = 13.5f;
+    private const float MerlotTannin = 5f;
+    private const float MerlotBody = 6f;
+    private const float MerlotSweetness = 3f;
+
+    private static readonly Color PinotColor = new Color(0.62f, 0.13f, 0.2f);
+    private const float PinotAcidity = 7f;
+    private const float PinotAlcohol = 13f;
+    private const float PinotTannin = 3f;
+    private const float PinotBody = 3f;
+    private const float PinotSweetness = 2f;
+
+    private static readonly Color SyrahColor = new Color(0.3f, 0.03f, 0.16f);
+    private const float SyrahAcidity = 5f;
+    private const float SyrahAlcohol = 14.5f;
+    private const float SyrahTannin = 7f;
+    private const float SyrahBody = 8f;
+    private const float SyrahSweetness = 2f;
+
+    private static readonly Color GrenacheColor = new Color(0.66f, 0.16f, 0.18f);
+    private const float GrenacheAcidity = 4f;
+    private const float GrenacheAlcohol = 15f;
+    private const float GrenacheTannin = 4f;
+    private const float GrenacheBody = 6f;
+    private const float GrenacheSweetness = 3f;
+
+    private static readonly Color SauvignonBlancColor = new Color(0.88f, 0.92f, 0.55f);
+    private const float SauvignonBlancAcidity = 9f;
+    private const float SauvignonBlancAlcohol = 12.5f;
+    private const float SauvignonBlancTannin = 1f;
+    private const float SauvignonBlancBody = 3f;
+    private const float SauvignonBlancSweetness = 2f;
+
+    private static readonly Color ChardonnayColor = new Color(0.95f, 0.83f, 0.42f);
+    private const float ChardonnayAcidity = 5f;
+    private const float ChardonnayAlcohol = 13.5f;
+    private const float ChardonnayTannin = 1f;
+    private const float ChardonnayBody = 7f;
+    private const float ChardonnaySweetness = 2f;
+
+    private static readonly Color RieslingColor = new Color(0.93f, 0.9f, 0.62f);
+    private const float RieslingAcidity = 9f;
+    private const float RieslingAlcohol = 10f;
+    private const float RieslingTannin = 1f;
+    private const float RieslingBody = 3f;
+    private const float RieslingSweetness = 6f;
+
+    // The third guest's blend, in percent of the glass. Together they make Blend.Full.
+    private const int MayaSyrahPercent = 70;
+    private const int MayaGrenachePercent = 30;
+
     /// <summary>The eight grapes, in shelf order. The values are the ones from our prototype.</summary>
     public static GrapeData[] Grapes()
     {
         return new[]
         {
-            Grape("Cabernet Sauvignon", true, new Color(0.36f, 0.04f, 0.12f), 6f, 14f, 9f, 8f, 2f, "Grippy, full\nblackcurrant, cedar", "blackcurrant", "cedar", "mint"),
-            Grape("Merlot", true, new Color(0.48f, 0.07f, 0.16f), 5f, 13.5f, 5f, 6f, 3f, "Soft, round\nplum, chocolate", "plum", "chocolate"),
-            Grape("Pinot Noir", true, new Color(0.62f, 0.13f, 0.2f), 7f, 13f, 3f, 3f, 2f, "Light, fresh\ncherry, raspberry", "cherry", "raspberry", "mushroom"),
-            Grape("Syrah", true, new Color(0.3f, 0.03f, 0.16f), 5f, 14.5f, 7f, 8f, 2f, "Bold, spicy\nblackberry, pepper", "blackberry", "black pepper", "smoke"),
-            Grape("Grenache", true, new Color(0.66f, 0.16f, 0.18f), 4f, 15f, 4f, 6f, 3f, "Warm, juicy\nstrawberry, spice", "strawberry", "cinnamon"),
-            Grape("Sauvignon Blanc", false, new Color(0.88f, 0.92f, 0.55f), 9f, 12.5f, 1f, 3f, 2f, "Zesty, light\ngrapefruit, grass", "grapefruit", "cut grass"),
-            Grape("Chardonnay", false, new Color(0.95f, 0.83f, 0.42f), 5f, 13.5f, 1f, 7f, 2f, "Creamy, full\nbutter, apple", "butter", "apple", "vanilla"),
-            Grape("Riesling", false, new Color(0.93f, 0.9f, 0.62f), 9f, 10f, 1f, 3f, 6f, "Racy, a bit sweet\nlime, honey", "lime", "honey", "peach"),
+            Grape("Cabernet Sauvignon", true, CabernetColor,
+                CabernetAcidity, CabernetAlcohol, CabernetTannin, CabernetBody, CabernetSweetness,
+                "Grippy, full\nblackcurrant, cedar", "blackcurrant", "cedar", "mint"),
+            Grape("Merlot", true, MerlotColor,
+                MerlotAcidity, MerlotAlcohol, MerlotTannin, MerlotBody, MerlotSweetness,
+                "Soft, round\nplum, chocolate", "plum", "chocolate"),
+            Grape("Pinot Noir", true, PinotColor,
+                PinotAcidity, PinotAlcohol, PinotTannin, PinotBody, PinotSweetness,
+                "Light, fresh\ncherry, raspberry", "cherry", "raspberry", "mushroom"),
+            Grape("Syrah", true, SyrahColor,
+                SyrahAcidity, SyrahAlcohol, SyrahTannin, SyrahBody, SyrahSweetness,
+                "Bold, spicy\nblackberry, pepper", "blackberry", "black pepper", "smoke"),
+            Grape("Grenache", true, GrenacheColor,
+                GrenacheAcidity, GrenacheAlcohol, GrenacheTannin, GrenacheBody, GrenacheSweetness,
+                "Warm, juicy\nstrawberry, spice", "strawberry", "cinnamon"),
+            Grape("Sauvignon Blanc", false, SauvignonBlancColor,
+                SauvignonBlancAcidity, SauvignonBlancAlcohol, SauvignonBlancTannin, SauvignonBlancBody, SauvignonBlancSweetness,
+                "Zesty, light\ngrapefruit, grass", "grapefruit", "cut grass"),
+            Grape("Chardonnay", false, ChardonnayColor,
+                ChardonnayAcidity, ChardonnayAlcohol, ChardonnayTannin, ChardonnayBody, ChardonnaySweetness,
+                "Creamy, full\nbutter, apple", "butter", "apple", "vanilla"),
+            Grape("Riesling", false, RieslingColor,
+                RieslingAcidity, RieslingAlcohol, RieslingTannin, RieslingBody, RieslingSweetness,
+                "Racy, a bit sweet\nlime, honey", "lime", "honey", "peach"),
         };
     }
 
@@ -76,9 +155,9 @@ public static class WineBarAssets
         GrapeData riesling = Find(grapes, "Riesling");
         evening.guests = new[]
         {
-            Guest("Noa", new[] { "cherry", "raspberry" }, (pinot, 100)),
-            Guest("Itai", new[] { "lime", "honey" }, (riesling, 100)),
-            Guest("Maya", new[] { "black pepper", "strawberry" }, (syrah, 70), (grenache, 30)),
+            Guest("Noa", new[] { "cherry", "raspberry" }, (pinot, Blend.Full)),
+            Guest("Itai", new[] { "lime", "honey" }, (riesling, Blend.Full)),
+            Guest("Maya", new[] { "black pepper", "strawberry" }, (syrah, MayaSyrahPercent), (grenache, MayaGrenachePercent)),
         };
         EditorUtility.SetDirty(evening);
         return evening;

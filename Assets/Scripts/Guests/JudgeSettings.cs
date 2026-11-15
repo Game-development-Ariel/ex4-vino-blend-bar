@@ -20,19 +20,32 @@ public class JudgeSettings : ScriptableObject
     }
 
     [Header("The parts of the score (together 1)")]
+    [Tooltip("The share of the score that comes from the properties (color, acidity and the rest)")]
     public float propertiesWeight = 0.75f;
+
+    [Tooltip("The share of the score that comes from the requested aromas")]
     public float notesWeight = 0.25f;
 
     [Header("Properties")]
     [Tooltip("A property that is off by this share of its whole range gets no points")]
     public float worstError = 0.35f;
 
-    // Color goes from 0 (white) to 1 (red), alcohol from about 10 to 15 percent, the rest from 1 to 10.
+    [Tooltip("Color, from 0 (white) to 1 (red)")]
     public Property color = new Property { range = 1f, weight = 2f };
+
+    [Tooltip("Acidity, on the 1 to 10 scale")]
     public Property acidity = new Property { range = 9f, weight = 1f };
+
+    [Tooltip("Alcohol, in percent (about 10 to 15)")]
     public Property alcohol = new Property { range = 5f, weight = 1f };
+
+    [Tooltip("Tannin, on the 1 to 10 scale. Not judged when the guest orders a white")]
     public Property tannin = new Property { range = 9f, weight = 1f };
+
+    [Tooltip("Body, on the 1 to 10 scale")]
     public Property body = new Property { range = 9f, weight = 1f };
+
+    [Tooltip("Sweetness, on the 1 to 10 scale")]
     public Property sweetness = new Property { range = 9f, weight = 1f };
 
     [Header("Feedback after serving (errors as a share of the range)")]
@@ -43,7 +56,12 @@ public class JudgeSettings : ScriptableObject
     public float littleOffError = 0.2f;
 
     [Header("The guest's reaction, from this score up")]
+    [Tooltip("From this score (0 to 1) the guest says it is perfect")]
     public float perfectScore = 0.9f;
+
+    [Tooltip("From this score (0 to 1) the guest says it is lovely")]
     public float lovelyScore = 0.75f;
+
+    [Tooltip("From this score (0 to 1) the guest says it is okay. Below it the guest is unhappy")]
     public float okayScore = 0.5f;
 }

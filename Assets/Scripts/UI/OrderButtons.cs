@@ -8,7 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public class OrderButtons : MonoBehaviour
 {
-    private const int CanvasSortingOrder = 10;
     private const int FontSize = 34;
     private const float ButtonHeight = 76f;
     private const float ButtonGap = 20f;
@@ -38,7 +37,7 @@ public class OrderButtons : MonoBehaviour
     private void Awake()
     {
         UiFactory.EnsureEventSystem();
-        Canvas canvas = UiFactory.CreateCanvas("Buttons Canvas", CanvasSortingOrder);
+        Canvas canvas = UiFactory.CreateCanvas("Buttons Canvas", UiTheme.HudLayer);
         canvas.transform.SetParent(transform, false);
 
         orderButtons = new GameObject("Order Buttons", typeof(RectTransform));

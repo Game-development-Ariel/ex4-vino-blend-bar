@@ -7,10 +7,12 @@ using UnityEngine.UI;
 /// </summary>
 public class NotesBoard : MonoBehaviour
 {
-    private const int CanvasSortingOrder = 10;
     private const int FontSize = 26;
     private const float Width = 760f;
     private const float Margin = 30f;
+
+    // A score from 0 to 1, times this, is a percent.
+    private const float PercentScale = 100f;
 
     private static readonly Vector2 TopRight = new Vector2(1f, 1f);
     private static readonly Vector2 TopLeft = new Vector2(0f, 1f);
@@ -26,7 +28,7 @@ public class NotesBoard : MonoBehaviour
 
     private void Awake()
     {
-        Canvas canvas = UiFactory.CreateCanvas("Notes Canvas", CanvasSortingOrder);
+        Canvas canvas = UiFactory.CreateCanvas("Notes Canvas", UiTheme.HudLayer);
         canvas.transform.SetParent(transform, false);
 
         Image panel = UiFactory.CreatePanel(canvas.transform, "Notes Panel", "Panel");
@@ -65,7 +67,7 @@ public class NotesBoard : MonoBehaviour
 
     private void ShowResult(ServeResult result)
     {
-        string text = $"Match: {result.Score * 100f:0}%.  Paid ${result.Pay}.\n";
+        string text = $"Match: {result.Score * PercentScale:0}%.  Paid ${result.Pay}.\n";
         if (result.Feedback.Count > 0)
         {
             text += string.Join("\n", result.Feedback) + "\n";

@@ -8,9 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public static class ResultOverlay
 {
-    // Above everything else in the scene, below the scene fader.
-    private const int SortingOrder = 60;
-
     private const int TitleFontSize = 100;
     private const int MessageFontSize = 36;
     private const int ButtonFontSize = 40;
@@ -28,7 +25,7 @@ public static class ResultOverlay
     public static void Show(string title, string message, Color titleColor)
     {
         UiFactory.EnsureEventSystem();
-        Transform canvas = UiFactory.CreateCanvas("Result Canvas", SortingOrder).transform;
+        Transform canvas = UiFactory.CreateCanvas("Result Canvas", UiTheme.ResultLayer).transform;
 
         Image cover = UiFactory.CreateImage(canvas, "Cover", null, CoverColor);
         UiFactory.Stretch(cover.rectTransform);
