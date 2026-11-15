@@ -13,7 +13,7 @@
 
 ## איך מריצים
 
-1. ב-Unity Hub פותחים את התיקייה `Vino-Blend-Bar` (ולא את שורש המאגר), בגרסה 6000.3.25f1.
+1. ב-Unity Hub פותחים את התיקייה של המאגר, בגרסה 6000.3.25f1.
 2. פותחים את הסצנה `Assets/Scenes/WineBar` ולוחצים Play.
 
 הסצנה והנתונים נבנים מקוד ב-[WineBarSceneBuilder.cs](Assets/Scripts/Editor/WineBarSceneBuilder.cs). אחרי שינוי בכלים מריצים `Tools > Rebuild Scene`. בנייה לדפדפן: `Tools > Build WebGL`.
