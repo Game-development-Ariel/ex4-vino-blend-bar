@@ -58,7 +58,10 @@ public class BarEvening : MonoBehaviour
         NextGuest();
     }
 
-    /// <summary>Tasting tells the player what is in the glass, and costs some of the guest's patience.</summary>
+    /// <summary>
+    /// Tasting tells the player what is in the glass, and costs some of the guest's patience.
+    /// Tasting an empty glass teaches nothing, so it is free.
+    /// </summary>
     public void Taste()
     {
         if (isOver)
@@ -66,8 +69,12 @@ public class BarEvening : MonoBehaviour
             return;
         }
 
-        Tasted?.Invoke(WineWords.Taste(new WineProfile(glass.Blend), settings.vocabulary));
-        patience.Spend(settings.tasteCostSeconds);
+        var wine = new WineProfile(glass.Blend);
+        Tasted?.Invoke(WineWords.Taste(wine, settings.vocabulary));
+        if (!wine.IsEmpty)
+        {
+            patience.Spend(settings.tasteCostSeconds);
+        }
     }
 
     public void Serve()
