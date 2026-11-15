@@ -30,8 +30,8 @@ public class BarEvening : MonoBehaviour
     public event Action<ServeResult> GuestServed;
     public event Action GuestGaveUp;
 
-    /// <summary>Gives the tasting notes of the glass.</summary>
-    public event Action<string> Tasted;
+    /// <summary>Gives the wine in the glass when the player tastes it. The UI puts it into words.</summary>
+    public event Action<WineProfile> Tasted;
 
     /// <summary>Gives the stars of the evening (0 to maxStars) and whether that is enough to pass.</summary>
     public event Action<float, bool> EveningEnded;
@@ -74,7 +74,7 @@ public class BarEvening : MonoBehaviour
         }
 
         var wine = new WineProfile(glass.Blend, settings.vocabulary.noteThreshold);
-        Tasted?.Invoke(WineWords.Taste(wine, settings.vocabulary));
+        Tasted?.Invoke(wine);
         if (!wine.IsEmpty)
         {
             patience.Spend(settings.tasteCostSeconds);

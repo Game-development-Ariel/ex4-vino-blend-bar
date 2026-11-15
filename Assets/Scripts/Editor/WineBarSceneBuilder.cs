@@ -190,9 +190,16 @@ public static class WineBarSceneBuilder
         SetupTools.SetField(guest, "evening", evening);
         SetupTools.SetField(guest, "patience", patience);
 
-        BlendPanel blend = ui.AddComponent<BlendPanel>();
-        SetupTools.SetField(blend, "evening", evening);
-        SetupTools.SetField(blend, "glass", glass);
+        GlassReadout readout = ui.AddComponent<GlassReadout>();
+        SetupTools.SetField(readout, "glass", glass);
+
+        NotesBoard notes = ui.AddComponent<NotesBoard>();
+        SetupTools.SetField(notes, "settings", settings);
+        SetupTools.SetField(notes, "evening", evening);
+
+        OrderButtons buttons = ui.AddComponent<OrderButtons>();
+        SetupTools.SetField(buttons, "evening", evening);
+        SetupTools.SetField(buttons, "glass", glass);
 
         EveningEndPanel end = ui.AddComponent<EveningEndPanel>();
         SetupTools.SetField(end, "settings", settings);
