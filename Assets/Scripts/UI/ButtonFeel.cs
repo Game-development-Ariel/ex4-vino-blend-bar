@@ -21,6 +21,13 @@ public class ButtonFeel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         transform.localScale = Vector3.one * scale;
     }
 
+    // A button hidden while the mouse is on it (like Serve) would come back still big.
+    private void OnDisable()
+    {
+        goalScale = 1f;
+        transform.localScale = Vector3.one;
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         goalScale = HoverScale;
