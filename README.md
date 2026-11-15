@@ -45,7 +45,7 @@
 
 ```
 Assets/
-├── Scripts/
+├── Scripts/        VinoBlendBar.asmdef (the assembly of the game's code)
 │   ├── Wine/       GrapeData, Blend, WineProfile, WineWords, WineVocabulary
 │   ├── Pouring/    GrapeBottle, Bartender, WineDrop, Glass
 │   ├── Guests/     GuestRecipe, GuestOrder, BlendJudge, JudgeSettings, ServeResult
@@ -54,7 +54,13 @@ Assets/
 │   ├── UI/         BarHud, GuestPanel, NotesBoard, GlassReadout, OrderButtons, GlassFill,
 │   │               EveningEndPanel, ResultOverlay, ScreenFader, ButtonFeel, UiFactory, UiTheme, UiAnim
 │   ├── Audio/      Sfx
-│   └── Editor/     the tools that build the scene and the data
+│   └── Editor/     the tools that build the scene and the data (VinoBlendBar.Editor.asmdef)
+├── Tests/
+│   ├── EditMode/   VinoBlendBar.Tests.EditMode.asmdef
+│   │               Wine/, Guests/, Game/, Data/, Scene/, Architecture/, TestUtils/
+│   └── PlayMode/   VinoBlendBar.Tests.PlayMode.asmdef
+│                   SmokeTests, PouringTests, EveningTests, MissingDataTests, UiTests,
+│                   InputAndFeelTests, TestUtils/
 ├── Data/           Grapes/ (8 grapes), Day1Settings (the guests of the evening),
 │                   WineVocabulary (where the words change), JudgeSettings (the scoring numbers)
 ├── Prefabs/        WineDrop
@@ -150,6 +156,55 @@ flowchart LR
 **לקוח חדש (המקבילה ל"אויב חדש" כאן).** מוסיפים שורה לרשימת guests בנכס [Day1Settings](Assets/Data/Day1Settings.asset): שם, בלנד וניחוחות. אין שינוי בקוד: מה שהלקוח אומר נבנה מהבלנד.
 
 **זן חדש.** מוסיפים שורה ל-`Grapes()` ב-[WineBarAssets.cs](Assets/Scripts/Editor/WineBarAssets.cs) (שם, אדום או לבן, צבע, חמשת הערכים, שתי שורות רמז וניחוחות) ומריצים `Tools > Rebuild Scene`. הכלי יוצר את נכס ה-GrapeData ב-`Assets/Data/Grapes` ושם בקבוק על המדף, ארבעה בכל מדף, כך שזן תשיעי פותח מדף שלישי. כדי שמדף שלישי ייכנס למסך צריך להזיז את המדפים ב-[WineBarSceneBuilder.cs](Assets/Scripts/Editor/WineBarSceneBuilder.cs) (`TopShelfY`, `ShelfSpacing`). נכס GrapeData שנוצר רק מהתפריט (`Create > Wine Bar > Grape`) לא מקבל בקבוק בסצנה. החישוב של הבלנד והניסוח של הלקוחות עובדים על כל זן.
+
+## בדיקות
+
+**מריצים את הבדיקות לפני כל מיזוג (merge).** אם בדיקה נכשלת, מתקנים את הקוד ולא את הבדיקה. מחליפים בדיקה רק כשהשינוי בהתנהגות מכוון, ובאותו קומיט.
+
+יש שני סוגים:
+
+* **EditMode**: בדיקות של הלוגיקה בלי להריץ את המשחק. הן טוענות את הנכסים האמיתיים מ-`Assets/Data` ובודקות את Blend, WineProfile, WineWords (כל גבול של WineVocabulary, מתחת, בדיוק ומעל), GuestOrder, BlendJudge, EveningScore ו-Patience. יש בהן טבלה של בלנדים קבועים עם הציון המדויק שלהם, כך ששינוי בחישוב הציון נכשל מיד. הן גם פותחות את הסצנה ובודקות שאין סקריפט חסר או שדה ריק, ומריצות את `Tools > Rebuild Scene` ומחזירות אחר כך כל קובץ למצבו.
+* **PlayMode**: בדיקות שמריצות את הסצנה האמיתית WineBar. טיפות נזרקות באמת ונוחתות בכוס, ערב שלם מנוצח ומופסד, והממשק מציג את מה שהערב אומר. כל שגיאה בלוג מכשילה את הבדיקה.
+
+לכל תקלה שתוקנה בענף `cleanup` יש בדיקה ששמה מתחיל ב-`Regression_`.
+
+**בדיקות הארכיטקטורה** (`Tests/EditMode/Architecture`) קוראות את הקוד עצמו ובודקות את החוקים של הקורס ושל ה-README:
+
+* קוד המשחק מחוץ ל-UI לא משתמש באף מחלקה של UI.
+* כל `+=` על אירוע נמצא ב-`OnEnable`, ויש לו `-=` תואם ב-`OnDisable` (המאזינים של הכפתורים ב-`Awake` הם החריג המתועד).
+* אין סינגלטון, וכל משתנה סטטי מופיע בטבלת הסטטיים למטה.
+* מחלקה אחת בכל קובץ, באותו שם כמו הקובץ.
+* לכל מספר `[SerializeField]` יש `[Tooltip]`, `[Range]` או `[Min]`.
+* כל מחלקה של המשחק מוזכרת ב-README.
+* ב-BlendJudge, WineWords ו-WineProfile אין מספרים קבועים חוץ מ-0 ו-1. המספרים שלהם נמצאים ב-JudgeSettings וב-WineVocabulary.
+
+**ב-Unity:** `Window > General > Test Runner`, בוחרים בלשונית EditMode או PlayMode, ולוחצים Run All.
+
+**משורת הפקודה** (מתיקיית הפרויקט, כשהעורך של הפרויקט סגור). בלי `-quit`, כי `-runTests` סוגר את יוניטי בעצמו:
+
+<div dir="ltr">
+
+```bash
+UNITY=/Applications/Unity/Hub/Editor/6000.3.25f1/Unity.app/Contents/MacOS/Unity
+"$UNITY" -batchmode -projectPath "$PWD" -runTests -testPlatform EditMode -testResults ../bar-editmode.xml -logFile ../bar-editmode.log
+"$UNITY" -batchmode -projectPath "$PWD" -runTests -testPlatform PlayMode -testResults ../bar-playmode.xml -logFile ../bar-playmode.log
+```
+
+</div>
+
+קוד היציאה הוא 0 כשהכול עבר, ו-2 כשבדיקה נכשלה. התוצאות נמצאות בקובץ ה-XML (`total`, `passed`, `failed` בשורה הראשונה).
+
+**כיסוי הקוד** (כמה מהקוד הבדיקות מריצות): החבילה Code Coverage מותקנת. ב-Unity: `Window > Analysis > Code Coverage`, מסמנים את VinoBlendBar ומריצים את הבדיקות. משורת הפקודה מוסיפים לשתי הפקודות למעלה:
+
+<div dir="ltr">
+
+```bash
+-enableCodeCoverage -coverageResultsPath ../coverage-bar -coverageOptions "generateHtmlReport;generateAdditionalMetrics;assemblyFilters:+VinoBlendBar"
+```
+
+</div>
+
+את הדוח פותחים בדפדפן: `../coverage-bar/Report/index.html`. התוצאות יוצאות מחוץ לפרויקט, כדי שלא ייכנסו לגיט. היום הבדיקות מריצות 99% משורות הקוד של VinoBlendBar.
 
 ## סינגלטון ומשתנים סטטיים
 
