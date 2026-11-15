@@ -23,7 +23,7 @@ public class GuestOrder
         }
 
         GuestName = recipe.guestName;
-        Target = new WineProfile(blend);
+        Target = new WineProfile(blend, scale.noteThreshold);
         RequestedNotes = recipe.requestedNotes ?? new string[0];
         Recipe = blend.Describe();
     }

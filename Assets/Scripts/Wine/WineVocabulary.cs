@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Where the words for a wine change: for example, below what sweetness a wine is "dry".
+/// Where the words for a wine change: for example, below what sweetness a wine is "dry",
+/// and how much of a grape it takes for its aromas to be named.
 /// The values use the same scale as GrapeData (1 to 10, and alcohol in percent),
 /// and they are saved as an asset, so the words can be tuned without touching code.
 /// </summary>
@@ -29,6 +30,10 @@ public class WineVocabulary : ScriptableObject
     [Header("Body")]
     public float lightBodyBelow = 4f;
     public float mediumBodyBelow = 6.5f;
+
+    [Header("Aromas")]
+    [Tooltip("A grape needs at least this percent of the blend for its aromas to come through")]
+    public int noteThreshold = 20;
 
     [Header("Alcohol, in percent")]
     public float lowAlcoholBelow = 11.5f;

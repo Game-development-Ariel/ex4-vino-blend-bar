@@ -7,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class BarEvening : MonoBehaviour
 {
-    private const float MaxStars = 5f;
-
     [SerializeField] private BarEveningSettings settings;
     [SerializeField] private Glass glass;
     [SerializeField] private Patience patience;
@@ -35,7 +33,7 @@ public class BarEvening : MonoBehaviour
     /// <summary>Gives the tasting notes of the glass.</summary>
     public event Action<string> Tasted;
 
-    /// <summary>Gives the stars of the evening (0 to 5) and whether that is enough to pass.</summary>
+    /// <summary>Gives the stars of the evening (0 to maxStars) and whether that is enough to pass.</summary>
     public event Action<float, bool> EveningEnded;
 
     private void Awake()
@@ -74,7 +72,7 @@ public class BarEvening : MonoBehaviour
             return;
         }
 
-        var wine = new WineProfile(glass.Blend);
+        var wine = new WineProfile(glass.Blend, settings.vocabulary.noteThreshold);
         Tasted?.Invoke(WineWords.Taste(wine, settings.vocabulary));
         if (!wine.IsEmpty)
         {
@@ -89,7 +87,7 @@ public class BarEvening : MonoBehaviour
             return;
         }
 
-        ServeResult result = judge.Judge(Order, new WineProfile(glass.Blend), patience.Fraction);
+        ServeResult result = judge.Judge(Order, new WineProfile(glass.Blend, settings.vocabulary.noteThreshold), patience.Fraction);
         Money += result.Pay;
         scoreSum += result.Score;
         StopOrdering();
@@ -105,7 +103,7 @@ public class BarEvening : MonoBehaviour
         if (GuestNumber == settings.guests.Length)
         {
             isOver = true;
-            float stars = scoreSum / settings.guests.Length * MaxStars;
+            float stars = scoreSum / settings.guests.Length * settings.maxStars;
             EveningEnded?.Invoke(stars, stars >= settings.starsToPass);
             return;
         }
@@ -123,6 +121,11 @@ public class BarEvening : MonoBehaviour
         if (settings.vocabulary == null)
         {
             Debug.LogError($"{settings.name} has no WineVocabulary. Drag Assets/Data/WineVocabulary into its Vocabulary field.", settings);
+            return false;
+        }
+        if (settings.judge == null)
+        {
+            Debug.LogError($"{settings.name} has no JudgeSettings. Drag Assets/Data/JudgeSettings into its Judge field.", settings);
             return false;
         }
         if (GuestCount == 0)

@@ -60,6 +60,11 @@ public static class WineBarAssets
             evening.vocabulary = SetupTools.Asset<WineVocabulary>(Folder + "WineVocabulary.asset");
             EditorUtility.SetDirty(evening);
         }
+        if (evening.judge == null)
+        {
+            evening.judge = SetupTools.Asset<JudgeSettings>(Folder + "JudgeSettings.asset");
+            EditorUtility.SetDirty(evening);
+        }
         if (!isNew)
         {
             return evening;

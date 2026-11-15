@@ -12,6 +12,9 @@ public class BarEveningSettings : ScriptableObject
     [Tooltip("Where the words for a wine change, for the guests' orders and the tasting")]
     public WineVocabulary vocabulary;
 
+    [Tooltip("The numbers the glass is scored with")]
+    public JudgeSettings judge;
+
     [Header("Patience")]
     public float patienceSeconds = 75f;
 
@@ -19,7 +22,10 @@ public class BarEveningSettings : ScriptableObject
     public float tasteCostSeconds = 5f;
 
     [Header("Passing")]
-    [Tooltip("The average score of the evening, in stars out of 5, needed to win")]
+    [Tooltip("A perfect evening gets this many stars")]
+    public float maxStars = 5f;
+
+    [Tooltip("The average score of the evening, in stars out of Max Stars, needed to win")]
     public float starsToPass = 3f;
 
     [Header("Money")]

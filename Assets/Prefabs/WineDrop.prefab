@@ -169,3 +169,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c0039a4d334ba4a946c0780f6f9c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WineDrop
+  lifetimeSeconds: 3
