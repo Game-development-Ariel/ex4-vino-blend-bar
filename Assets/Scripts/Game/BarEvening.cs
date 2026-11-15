@@ -19,6 +19,10 @@ public class BarEvening : MonoBehaviour
     private BlendJudge judge;
     private float scoreSum;
 
+    // After the last guest nothing works any more. Without it, pressing Enter on the selected
+    // button would end the evening again and again.
+    private bool isOver;
+
     public GuestOrder Order { get; private set; }
     public int GuestNumber { get; private set; }
     public int GuestCount => settings.guests.Length;
@@ -57,13 +61,18 @@ public class BarEvening : MonoBehaviour
     /// <summary>Tasting tells the player what is in the glass, and costs some of the guest's patience.</summary>
     public void Taste()
     {
+        if (isOver)
+        {
+            return;
+        }
+
         Tasted?.Invoke(WineWords.Taste(new WineProfile(glass.Blend), settings.vocabulary));
         patience.Spend(settings.tasteCostSeconds);
     }
 
     public void Serve()
     {
-        if (!glass.Blend.IsFull)
+        if (isOver || !glass.Blend.IsFull)
         {
             return;
         }
@@ -77,8 +86,13 @@ public class BarEvening : MonoBehaviour
 
     public void NextGuest()
     {
+        if (isOver)
+        {
+            return;
+        }
         if (GuestNumber == settings.guests.Length)
         {
+            isOver = true;
             float stars = scoreSum / settings.guests.Length * MaxStars;
             EveningEnded?.Invoke(stars, stars >= settings.starsToPass);
             return;

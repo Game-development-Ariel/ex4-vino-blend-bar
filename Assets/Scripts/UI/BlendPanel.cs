@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -23,6 +24,7 @@ public class BlendPanel : MonoBehaviour
     private GameObject orderButtons;
     private CanvasGroup serveGroup;
     private GameObject nextButton;
+    private Text nextLabel;
 
     private void Awake()
     {
@@ -50,6 +52,7 @@ public class BlendPanel : MonoBehaviour
         Button next = AddButton(canvas.transform, "Next guest", -410f, 400f);
         next.onClick.AddListener(evening.NextGuest);
         nextButton = next.gameObject;
+        nextLabel = next.GetComponentInChildren<Text>();
     }
 
     private void OnEnable()
@@ -59,6 +62,7 @@ public class BlendPanel : MonoBehaviour
         evening.Tasted += ShowNotes;
         evening.GuestServed += ShowResult;
         evening.GuestGaveUp += ShowGaveUp;
+        evening.EveningEnded += HideNext;
     }
 
     private void OnDisable()
@@ -68,6 +72,7 @@ public class BlendPanel : MonoBehaviour
         evening.Tasted -= ShowNotes;
         evening.GuestServed -= ShowResult;
         evening.GuestGaveUp -= ShowGaveUp;
+        evening.EveningEnded -= HideNext;
     }
 
     private Button AddButton(Transform parent, string label, float x, float width)
@@ -119,5 +124,16 @@ public class BlendPanel : MonoBehaviour
     {
         orderButtons.SetActive(ordering);
         nextButton.SetActive(!ordering);
+        nextLabel.text = evening.GuestNumber < evening.GuestCount ? "Next guest" : "See results";
+    }
+
+    // The end screen covers the bar, so the button goes away, and it is no longer selected for the keyboard.
+    private void HideNext(float stars, bool passed)
+    {
+        nextButton.SetActive(false);
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
     }
 }
