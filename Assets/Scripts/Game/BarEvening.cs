@@ -25,7 +25,7 @@ public class BarEvening : MonoBehaviour
 
     public GuestOrder Order { get; private set; }
     public int GuestNumber { get; private set; }
-    public int GuestCount => settings.guests.Length;
+    public int GuestCount => settings.guests != null ? settings.guests.Length : 0;
     public int Money { get; private set; }
 
     public event Action<GuestOrder> GuestArrived;
@@ -55,6 +55,11 @@ public class BarEvening : MonoBehaviour
 
     private void Start()
     {
+        if (!HasTheData())
+        {
+            isOver = true; // Nothing can work without the data, and the error said what is missing.
+            return;
+        }
         NextGuest();
     }
 
@@ -111,6 +116,21 @@ public class BarEvening : MonoBehaviour
         patience.Restart(settings.patienceSeconds);
         bartender.enabled = true;
         GuestArrived?.Invoke(Order);
+    }
+
+    private bool HasTheData()
+    {
+        if (settings.vocabulary == null)
+        {
+            Debug.LogError($"{settings.name} has no WineVocabulary. Drag Assets/Data/WineVocabulary into its Vocabulary field.", settings);
+            return false;
+        }
+        if (GuestCount == 0)
+        {
+            Debug.LogError($"{settings.name} has no guests, so there is no evening to play.", settings);
+            return false;
+        }
+        return true;
     }
 
     // A guest who gives up adds 0 to the score.

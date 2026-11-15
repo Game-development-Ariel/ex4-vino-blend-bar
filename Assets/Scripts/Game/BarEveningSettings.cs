@@ -31,4 +31,21 @@ public class BarEveningSettings : ScriptableObject
     [Tooltip("Above this score the guest also tips")]
     public float tipScore = 0.85f;
     public int maxTip = 10;
+
+    // Unity runs this in the editor when the asset changes, so a broken guest shows up right away.
+    private void OnValidate()
+    {
+        if (guests == null)
+        {
+            return;
+        }
+        foreach (GuestRecipe guest in guests)
+        {
+            string problem = guest.Problem();
+            if (problem != null)
+            {
+                Debug.LogWarning($"{name}, guest {guest.guestName}: {problem}", this);
+            }
+        }
+    }
 }
