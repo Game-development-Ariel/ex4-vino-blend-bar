@@ -21,6 +21,10 @@ public class BarEvening : MonoBehaviour
     // button would end the evening again and again.
     private bool isOver;
 
+    // True from a guest's arrival until the guest is served or leaves. A glass is tasted and served
+    // only then, and a guest is served only once.
+    private bool isOrdering;
+
     public GuestOrder Order { get; private set; }
     public int GuestNumber { get; private set; }
     public int GuestCount => settings.guests != null ? settings.guests.Length : 0;
@@ -68,7 +72,7 @@ public class BarEvening : MonoBehaviour
     /// </summary>
     public void Taste()
     {
-        if (isOver)
+        if (!isOrdering)
         {
             return;
         }
@@ -83,7 +87,7 @@ public class BarEvening : MonoBehaviour
 
     public void Serve()
     {
-        if (isOver || !glass.Blend.IsFull)
+        if (!isOrdering || !glass.Blend.IsFull)
         {
             return;
         }
@@ -96,7 +100,7 @@ public class BarEvening : MonoBehaviour
 
     public void NextGuest()
     {
-        if (isOver)
+        if (isOver || isOrdering)
         {
             return;
         }
@@ -112,6 +116,7 @@ public class BarEvening : MonoBehaviour
         glass.Empty();
         patience.Restart(settings.patienceSeconds);
         bartender.enabled = true;
+        isOrdering = true;
         GuestArrived?.Invoke(Order);
     }
 
@@ -144,6 +149,7 @@ public class BarEvening : MonoBehaviour
 
     private void StopOrdering()
     {
+        isOrdering = false;
         patience.Stop();
         bartender.enabled = false;
     }
