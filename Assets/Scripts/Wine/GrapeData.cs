@@ -11,10 +11,19 @@ public class GrapeData : ScriptableObject
     public bool isRed;
     public Color liquidColor = Color.red;
 
+    [Tooltip("Acidity, from 1 (flat) to 10 (very sharp)")]
     public float acidity = 5f;
+
+    [Tooltip("Alcohol, in percent")]
     public float alcohol = 13f;
+
+    [Tooltip("Tannin, from 1 (none) to 10 (very grippy)")]
     public float tannin = 5f;
+
+    [Tooltip("Body, from 1 (light like water) to 10 (very full)")]
     public float body = 5f;
+
+    [Tooltip("Sweetness, from 1 (bone dry) to 10 (very sweet)")]
     public float sweetness = 2f;
 
     [Tooltip("Aromas of this grape. A guest can ask for them")]
