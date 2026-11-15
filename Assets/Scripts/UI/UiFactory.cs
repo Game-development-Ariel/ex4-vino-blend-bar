@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 /// <summary>
-/// Small helpers that create UI objects in code: a canvas, texts, panels, icons and buttons.
+/// Small helpers that create UI objects in code: a canvas, texts, panels and buttons.
 /// Everything takes its fonts, colors and sprites from UiTheme, so all the screens look the same.
 /// </summary>
 public static class UiFactory
@@ -75,15 +75,6 @@ public static class UiFactory
         image.color = color;
         image.raycastTarget = false; // Only buttons and the joystick need to catch touches.
         return image;
-    }
-
-    /// <summary>An icon from the UI sprites, at a fixed size.</summary>
-    public static Image CreateIcon(Transform parent, string spriteName, Vector2 size)
-    {
-        Image icon = CreateImage(parent, spriteName, UiTheme.Sprite(spriteName), Color.white);
-        icon.rectTransform.sizeDelta = size;
-        icon.preserveAspect = true;
-        return icon;
     }
 
     /// <summary>

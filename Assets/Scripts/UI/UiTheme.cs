@@ -10,7 +10,6 @@ public static class UiTheme
     public static readonly Color TextColor = new Color(0.92f, 0.89f, 0.84f);
     public static readonly Color Muted = new Color(0.6f, 0.58f, 0.55f);
     public static readonly Color Hope = new Color(1f, 0.78f, 0.5f);
-    public static readonly Color Water = new Color(0.62f, 0.76f, 0.88f);
     public static readonly Color Danger = new Color(0.72f, 0.16f, 0.13f);
 
     /// <summary>An old book serif, for titles and memories.</summary>
