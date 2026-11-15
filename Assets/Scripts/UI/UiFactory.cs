@@ -12,6 +12,13 @@ public static class UiFactory
     // The UI is designed for this screen size, and the CanvasScaler scales it to the real screen.
     private static readonly Vector2 ReferenceResolution = new Vector2(1920f, 1080f);
 
+    // How every text looks: a little air between lines, and a soft dark shadow so light text reads over the scene.
+    private const float TextLineSpacing = 1.1f;
+    private static readonly Color TextShadowColor = new Color(0f, 0f, 0f, 0.7f);
+    private static readonly Vector2 TextShadowOffset = new Vector2(2f, -2f);
+
+    private static readonly Vector2 Middle = new Vector2(0.5f, 0.5f);
+
     // 0.5 = scale by both width and height equally, so it works in landscape and portrait.
     private const float WidthHeightMatch = 0.5f;
 
@@ -47,12 +54,12 @@ public static class UiFactory
         text.raycastTarget = false;
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.verticalOverflow = VerticalWrapMode.Overflow;
-        text.lineSpacing = 1.1f;
+        text.lineSpacing = TextLineSpacing;
 
         // A soft dark shadow keeps light text readable over the bar.
         Shadow shadow = textObject.AddComponent<Shadow>();
-        shadow.effectColor = new Color(0f, 0f, 0f, 0.7f);
-        shadow.effectDistance = new Vector2(2f, -2f);
+        shadow.effectColor = TextShadowColor;
+        shadow.effectDistance = TextShadowOffset;
         return text;
     }
 
@@ -95,14 +102,14 @@ public static class UiFactory
         background.color = color;
         background.raycastTarget = true; // Buttons must catch clicks and touches.
         Place(background.rectTransform, anchor, Vector2.zero, size);
-        background.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        background.rectTransform.pivot = Middle;
 
         var button = background.gameObject.AddComponent<Button>();
         button.transition = Selectable.Transition.None; // ButtonFeel animates it instead of changing colors.
         background.gameObject.AddComponent<ButtonFeel>();
 
-        Text text = CreateTitle(background.transform, "Label", new Vector2(0.5f, 0.5f), size, fontSize, UiTheme.TextColor);
-        text.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        Text text = CreateTitle(background.transform, "Label", Middle, size, fontSize, UiTheme.TextColor);
+        text.rectTransform.pivot = Middle;
         text.text = label;
         return button;
     }

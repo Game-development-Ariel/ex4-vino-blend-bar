@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class ButtonFeel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
+    private const float ClickVolume = 0.6f;
+
     private const float HoverScale = 1.04f;
     private const float PressedScale = 0.97f;
 
@@ -41,7 +43,7 @@ public class ButtonFeel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         goalScale = PressedScale;
-        Sfx.Play("Click", 0.6f);
+        Sfx.Play("Click", ClickVolume);
     }
 
     public void OnPointerUp(PointerEventData eventData)
